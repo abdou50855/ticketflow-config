@@ -22,6 +22,12 @@ spring:
                 - Path=/api/events/**
               filters:
                 - AddResponseHeader=X-Served-By, api-gateway
+            - id: booking-service
+              uri: lb://booking-service
+              predicates:
+                - Path=/api/bookings/**
+              filters:
+                - AddResponseHeader=X-Served-By, api-gateway
       globalcors:
         add-to-simple-url-handler-mapping: true
         cors-configurations:
