@@ -1,16 +1,31 @@
 server:
   port: 8083
 
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 2000
+            read-timeout: 3000
+      circuitbreaker:
+        enabled: true
+        group:
+          enabled: true
+
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,circuitbreakers
 
-spring:
-  cloud:
-    openfeign:
-      config:
-        event-service:
-          connectTimeout: 2000
-          readTimeout: 3000
+ticketflow:
+  resilience:
+    event-service:
+      sliding-window-size: 10
+      minimum-number-of-calls: 5
+      failure-rate-threshold: 50
+      wait-in-open-state: 10s
+      permitted-calls-in-half-open-state: 3
+      time-limit: 4s
