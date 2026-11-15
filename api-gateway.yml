@@ -1,6 +1,3 @@
-server:
-  port: 8080
-
 spring:
   cloud:
     gateway:
@@ -26,6 +23,18 @@ spring:
               uri: lb://booking-service
               predicates:
                 - Path=/api/bookings/**
+              filters:
+                - AddResponseHeader=X-Served-By, api-gateway
+            - id: payment-service
+              uri: lb://payment-service
+              predicates:
+                - Path=/api/payments/**
+              filters:
+                - AddResponseHeader=X-Served-By, api-gateway
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notifications/**
               filters:
                 - AddResponseHeader=X-Served-By, api-gateway
       globalcors:
